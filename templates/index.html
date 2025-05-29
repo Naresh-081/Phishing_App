@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Phishing Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px;
+            background-color: #f7f9fc;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .form-box {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .result {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .Legitimate {
+            color: green;
+        }
+
+        .phishing {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔎 Phishing Detection Dashboard</h1>
+
+    <div class="container">
+        <!-- URL Detection Form -->
+        <div class="form-box">
+            <h2>URL Phishing Detector</h2>
+            <form method="post" action="/check_url">
+                <input type="text" name="url" placeholder="Enter a URL..." required>
+                <br>
+                <button type="submit">Check URL</button>
+            </form>
+            {% if url %}
+            <div class="result">
+                <p><strong>URL:</strong> {{ url }}</p>
+                <p><strong>Model Prediction:</strong> 
+                    <span class="{{ 'phishing' if bert_result == 'Phishing' else 'Legitimate' }}">{{ bert_result }}</span>
+                </p>
+                <p><strong>Google Safe Browsing:</strong> 
+                    <span class="{{ 'phishing' if google_result == 'Phishing' else 'Legitimate' }}">{{ google_result }}</span>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Email Detection Form -->
+        <div class="form-box">
+            <h2>Email Phishing Detector</h2>
+            <form method="post" action="/check_email">
+                <input type="text" name="email" placeholder="Paste suspicious email content..." required>
+                <br>
+                <button type="submit">Check Email</button>
+            </form>
+            {% if email_input %}
+            <div class="result">
+                <p><strong>Email Input:</strong> {{ email_input }}</p>
+                <p><strong>Model Prediction:</strong> 
+                    <span class="{{ 'phishing' if email_prediction == 'Phishing' else 'Legitimate' }}">{{ email_prediction }}</span>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
